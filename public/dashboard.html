@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <link rel="icon" type="image/x-icon" href="assets/fav-icon/favicon.ico">
+  <link rel="stylesheet" href="dashboard.css" class="css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organize - dashboard </title>
+</head>
+<body>
+
+<h1>Meu Painel</h1>
+
+<div class="grid">
+
+<div class="card" onclick="irParaDividas()">
+    <div class="icon">💳</div>
+    <span>Dívidas</span>
+  </div>
+
+
+  <div class="card">
+    <div class="icon">👥</div>
+    <span>Devedores</span>
+  </div>
+
+  <div class="card" onclick="irParaAnotacoes()">
+    <div class="icon">📝</div>
+    <span>Anotações Importantes</span>
+  </div>
+
+  <div class="card">
+    <div class="icon">📹</div>
+    <span>Monitoramento</span>
+  </div>
+</div>
+
+
+
+<script>
+function irParaEstoque(){
+  window.location.href = "estoque.html";
+}
+
+function irParaAnotacoes(){
+  window.location.href = "anotacoes.html";
+}
+
+function irParaDividas(){
+  window.location.href = "dividas.html";
+}
+
+
+function filtrarDividas(tipo){
+  const corpo = document.getElementById("corpoTabela");
+  corpo.innerHTML = "";
+
+  const filtradas = tipo === "todas"
+    ? dividas
+    : dividas.filter(d => d.tipo === tipo);
+
+  filtradas.forEach(d => {
+    corpo.innerHTML += `
+      <tr>
+        <td>${d.data}</td>
+        <td>${d.descricao}</td>
+        <td>${d.autor}</td>
+        <td>R$ ${d.valor}</td>
+        <td>${d.obs}</td>
+      </tr>
+    `;
+  });
+}
+
+</script>
+
+</body>
+</html>

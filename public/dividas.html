@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<link rel="icon" type="image/x-icon" href="assets/fav-icon/favicon.ico">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Organize - Minhas Dívidas</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="dividas.css">
+
+</head>
+
+<body>
+
+<!-- TOPO -->
+<div class="topbar">
+
+  <div class="topbar-left">
+
+    <button class="btn-voltar" onclick="voltarDashboard()">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+
+    <h1>Minhas Dívidas em aberto</h1>
+
+  </div>
+
+  <button class="btn-add" onclick="novaDivida()">
+    <i class="fa-solid fa-plus"></i>
+    Nova Dívida
+  </button>
+
+</div>
+
+<!-- FILTROS -->
+<div class="filters">
+
+  <button onclick="filtrar('todas')">
+    Todas
+  </button>
+
+  <button onclick="filtrar('pessoal')">
+    Pessoal
+  </button>
+
+  <button onclick="filtrar('institucional')">
+    Institucional
+  </button>
+
+  <button onclick="carregarDividas()">
+    🔄 Atualizar
+  </button>
+
+</div>
+
+<!-- TABELA -->
+<div class="table-wrapper">
+
+<table class="tabela">
+
+<thead>
+
+<tr>
+
+  <th>Data</th>
+  <th>Descrição</th>
+  <th>Valor</th>
+  <th>Tipo</th>
+  <th>Pessoa</th>
+  <th>Obs</th>
+  <th>Ações</th>
+
+</tr>
+
+</thead>
+
+<tbody id="listaDividas"></tbody>
+
+</table>
+
+</div>
+
+<!-- SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="dividas.js"></script>
+
+
+
+
+<!-- MODAL NOVA DÍVIDA -->
+
+<div class="modal" id="modalDivida">
+
+  <div class="modal-content">
+
+    <div class="modal-top">
+
+      <h2>Nova Dívida</h2>
+
+      <button class="btn-fechar"
+      onclick="fecharModal()">
+
+        <i class="fa-solid fa-xmark"></i>
+
+      </button>
+
+    </div>
+
+    <form id="formDivida">
+
+      <div class="input-group">
+
+        <label>Descrição</label>
+
+        <input
+        type="text"
+        id="descricao"
+        placeholder="Digite a descrição"
+        required>
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Valor</label>
+
+        <input
+        type="number"
+        id="valor"
+        placeholder="0.00"
+        step="0.01"
+        required>
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Tipo</label>
+
+        <select id="tipo">
+
+          <option value="pessoal">
+            Pessoal
+          </option>
+
+          <option value="institucional">
+            Institucional
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Pessoa</label>
+
+        <input
+        type="text"
+        id="pessoa"
+        placeholder="Nome da pessoa">
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Observação</label>
+
+        <textarea
+        id="obs"
+        placeholder="Observações"></textarea>
+
+      </div>
+
+      <button
+      type="submit"
+      class="btn-salvar">
+
+        Salvar Dívida
+
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+
+<!-- TOAST -->
+
+<div class="toast" id="toast">
+
+  <i class="fa-solid fa-circle-check"></i>
+
+  <span id="toastText">
+    Sucesso
+  </span>
+
+</div>
+
+<!-- MODAL EXCLUIR -->
+
+<div class="modal-confirmar"
+id="modalExcluir">
+
+  <div class="confirmar-box">
+
+    <div class="confirmar-icon">
+
+      <i class="fa-solid fa-trash"></i>
+
+    </div>
+
+    <h3>Excluir dívida?</h3>
+
+    <p>
+      Essa ação não poderá ser desfeita.
+    </p>
+
+    <div class="confirmar-actions">
+
+      <button
+      class="btn-cancelar"
+      onclick="fecharExcluir()">
+
+        Cancelar
+
+      </button>
+
+      <button
+      class="btn-confirmar"
+      onclick="confirmarExcluir()">
+
+        Excluir
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>
