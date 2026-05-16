@@ -3,8 +3,13 @@ const path = require("path");
 
 const app = express();
 
-app.use(express.static("public"));
+// arquivos estáticos
+app.use(express.static(path.join(__dirname, "public")));
 
-app.listen(3000, () => {
-    console.log("Servidor rodando em http://localhost:3000");
+// rota principal
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
+
+// exporta o app para a Vercel
+module.exports = app;
