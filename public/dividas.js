@@ -58,10 +58,10 @@ async function carregarDividas(){
 /* RENDERIZAR */
 function renderizar(lista){
 
-  const tbody =
+  const container =
   document.getElementById("listaDividas");
 
-  tbody.innerHTML = "";
+  container.innerHTML = "";
 
   lista.forEach(d => {
 
@@ -71,45 +71,85 @@ function renderizar(lista){
           .toLocaleDateString('pt-BR')
       : "--";
 
-    tbody.innerHTML += `
-    
-    <tr>
+    const tipoClasse =
+      d.tipo === "institucional"
+      ? "tag-institucional"
+      : "tag-pessoal";
 
-      <td>${dataFormatada}</td>
+    container.innerHTML += `
 
-      <td>${d.descricao || "--"}</td>
+    <div class="chat-item">
 
-      <td>
-        R$ ${Number(d.valor || 0).toFixed(2)}
-      </td>
+      <!-- FOTO -->
 
-      <td>${d.tipo || "--"}</td>
+     <div class="chat-foto">
+  <img src="perfil.png">
+</div>
 
-      <td>${d.pessoa || "--"}</td>
+      <!-- BALÃO -->
 
-      <td>${d.obs || "--"}</td>
+      <div class="chat-balao">
 
-      <td>
+        <div class="chat-top">
 
-     
+          <span class="chat-data">
+            📅 ${dataFormatada}
+          </span>
 
-        <button class="btn-editar"
+          <span class="tag-tipo ${tipoClasse}">
+            ${d.tipo || "--"}
+          </span>
+
+        </div>
+
+        <div class="chat-linha">
+          <strong>Descrição:</strong>
+          ${d.descricao || "--"}
+        </div>
+
+        <div class="chat-linha">
+          <strong>Valor:</strong>
+
+          <span class="chat-valor">
+            R$ ${Number(d.valor || 0).toFixed(2)}
+          </span>
+        </div>
+
+        <div class="chat-linha">
+          <strong>Pessoa:</strong>
+          ${d.pessoa || "--"}
+        </div>
+
+        <div class="chat-linha">
+          <strong>Obs:</strong>
+          ${d.obs || "--"}
+        </div>
+
+      </div>
+
+      <!-- AÇÕES -->
+
+      <div class="chat-acoes">
+
+        <button
+        class="btn-editar"
         onclick="editar('${d.id}')">
 
           <i class="fa-solid fa-pen"></i>
 
         </button>
 
-        <button class="btn-excluir"
+        <button
+        class="btn-excluir"
         onclick="excluirDivida('${d.id}')">
 
           <i class="fa-solid fa-trash"></i>
 
         </button>
 
-      </td>
+      </div>
 
-    </tr>
+    </div>
 
     `;
 
