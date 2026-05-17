@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="assets/fav-icon/favicon.ico">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Organize - Meus Devedores</title>
+
+<link rel="stylesheet" href="devedores.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <button class="btn-voltar" onclick="voltarDashboard()">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+
+<div class="modal-confirmar" id="modalExcluir">
+
+  <div class="confirmar-box">
+
+    <div class="confirmar-icon">
+      <i class="fa-solid fa-trash"></i>
+    </div>
+
+    <h3>Excluir devedor?</h3>
+    <p>Essa ação não poderá ser desfeita.</p>
+
+    <div class="confirmar-actions">
+
+      <button class="btn-cancelar" onclick="fecharExcluir()">
+        Cancelar
+      </button>
+
+      <button class="btn-confirmar" onclick="confirmarExcluir()">
+        Excluir
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="topbar">
+  <h1>Devedores</h1>
+
+  <button class="btn-add" onclick="novoDevedor()">
+    <i class="fa-solid fa-plus"></i> Novo
+  </button>
+</div>
+
+<div class="lista-chat" id="listaDevedores"></div>
+
+<!-- MODAL DEVEDOR -->
+<div class="modal" id="modalDevedor">
+
+  <div class="modal-content">
+
+    <div class="modal-top">
+      <h2>Devedor</h2>
+      <button onclick="fecharModal()" class="btn-fechar">X</button>
+    </div>
+
+    <form id="formDevedor">
+
+
+        
+    <div class="input-group">
+  <label>Nome</label>
+  <input id="devedor" type="text" placeholder="Nome" required>
+</div>
+
+<div class="input-group">
+  <label>Telefone</label>
+  <input id="telefone" type="text" placeholder="Telefone (WhatsApp)">
+</div>
+
+<div class="input-group">
+  <label>Valor</label>
+  <input id="valor" type="number" step="0.01" placeholder="Valor" required>
+</div>
+
+<div class="input-group">
+  <label>Juros %</label>
+  <input id="juros" type="number" step="0.01" placeholder="Juros %">
+</div>
+
+<div class="input-group">
+  <label>Observação</label>
+  <textarea id="obs" placeholder="Obs"></textarea>
+</div>
+      <button class="btn-salvar" type="submit">Salvar</button>
+
+    </form>
+
+  </div>
+</div>
+
+<!-- MODAL JUROS -->
+<div class="modal" id="modalJuros">
+  <div class="modal-content">
+
+    <div class="modal-top">
+      <h2>Registrar Juros Pago</h2>
+      <button onclick="fecharJuros()" class="btn-fechar">X</button>
+    </div>
+
+    <form id="formJuros">
+
+     <div class="input-group">
+  <label>Mês</label>
+  <input id="mes" type="text" placeholder="Ex: 01/2026" required>
+</div>
+
+<div class="input-group">
+  <label>Valor pago</label>
+  <input id="valor_pago" type="number" step="0.01" placeholder="Valor pago" required>
+</div>
+
+<div class="input-group">
+  <label>Anexar comprovante (Opcional)</label>
+  <input id="comprovante" type="file">
+</div>
+
+      <button class="btn-salvar" type="submit">Salvar</button>
+
+    </form>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="devedores.js"></script>
+
+
+
+
+</body>
+</html>

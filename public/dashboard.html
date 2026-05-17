@@ -19,10 +19,10 @@
   </div>
 
 
-  <div class="card">
-    <div class="icon">👥</div>
-    <span>Devedores</span>
-  </div>
+<div class="card" onclick="irParaDevedores()">
+  <div class="icon">👥</div>
+  <span>Devedores</span>
+</div>
 
   <div class="card" onclick="irParaAnotacoes()">
     <div class="icon">📝</div>
@@ -49,6 +49,13 @@ function irParaAnotacoes(){
 function irParaDividas(){
   window.location.href = "dividas.html";
 }
+
+
+
+function irParaDevedores(){
+  window.location.href = "devedores.html";
+}
+
 
 
 function filtrarDividas(tipo){
