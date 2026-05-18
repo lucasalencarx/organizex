@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Minha Loja</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+    --bg:#f1f5f9;
+    --white:#fff;
+    --blue:#2563eb;
+    --green:#16a34a;
+    --red:#dc2626;
+    --purple:#9333ea;
+    --text:#0f172a;
+    --sub:#64748b;
+    --border:#e2e8f0;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:var(--bg);
+    padding:12px;
+    color:var(--text);
+}
+
+.topo{
+    background:linear-gradient(135deg,#60a5fa,#2563eb);
+    padding:22px;
+    border-radius:24px;
+    color:white;
+}
+
+.topo h1{
+    font-size:28px;
+}
+
+.topo p{
+    margin-top:4px;
+    font-size:13px;
+}
+
+.card{
+    background:white;
+    margin-top:12px;
+    border-radius:20px;
+    padding:16px;
+    border:1px solid var(--border);
+}
+
+/* SALDO */
+
+.saldo-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:5px;
+}
+
+.saldo{
+    font-size:30px;
+    font-weight:700;
+    color:var(--green);
+}
+
+.eye{
+    width:44px;
+    height:44px;
+    border:none;
+    border-radius:14px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s;
+    color:#475569;
+}
+
+.eye:hover{
+    background:#eef2ff;
+}
+
+.eye:active{
+    transform:scale(.95);
+}
+
+/* INFO LOJA */
+
+.info-loja{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    margin-top:15px;
+    scrollbar-width:none;
+}
+
+.info-loja::-webkit-scrollbar{
+    display:none;
+}
+
+.box-loja{
+    min-width:180px;
+    background:#f8fafc;
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:14px;
+    flex-shrink:0;
+}
+
+.box-loja span{
+    display:block;
+    font-size:12px;
+    color:var(--sub);
+    margin-bottom:4px;
+}
+
+.box-loja strong{
+    font-size:15px;
+}
+
+/* BOTÕES */
+
+.botoes{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:10px;
+    margin-top:15px;
+}
+
+/* ICONES */
+
+.confirmar-icon{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:auto;
+    margin-bottom:16px;
+    font-size:28px;
+}
+
+.excluir-icon{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.vendido-icon{
+    background:#dcfce7;
+    color:#16a34a;
+}
+
+.btn{
+    border:none;
+    border-radius:14px;
+    padding:14px;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+    font-size:13px;
+}
+
+.azul{
+    background:linear-gradient(135deg,#60a5fa,#2563eb);
+}
+
+.verde{
+    background:linear-gradient(135deg,#4ade80,#16a34a);
+}
+
+.roxo{
+    background:linear-gradient(135deg,#c084fc,#9333ea);
+}
+
+/* PESQUISA */
+
+.btn-voltar{
+    margin-bottom: 5px;
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:12px;
+  background:#000;
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.btn-voltar i{
+  color:#fff;
+  font-size:16px;
+}
+
+.search{
+    width:100%;
+    margin-top:15px;
+    padding:14px;
+    border-radius:14px;
+    border:1px solid var(--border);
+    background:#f8fafc;
+    outline:none;
+}
+
+/* PRODUTO */
+
+.produto{
+    background:white;
+    margin-top:12px;
+    border-radius:18px;
+    border:1px solid var(--border);
+    overflow:hidden;
+}
+
+.header-produto{
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.nome{
+    font-size:17px;
+    font-weight:700;
+}
+
+.categoria{
+    color:var(--sub);
+    font-size:12px;
+    margin-top:2px;
+}
+
+.status{
+    padding:7px 11px;
+    border-radius:10px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.estoque{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.vendido{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+/* INFOS */
+
+.info-scroll{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding:0 15px 15px;
+    scrollbar-width:none;
+}
+
+.info-scroll::-webkit-scrollbar{
+    display:none;
+}
+
+.info{
+    min-width:140px;
+    background:#f8fafc;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:12px;
+    flex-shrink:0;
+}
+
+.info span{
+    display:block;
+    font-size:11px;
+    color:var(--sub);
+    margin-bottom:4px;
+}
+
+.info strong{
+    font-size:14px;
+}
+
+/* DESC */
+
+.desc{
+    padding:0 15px 15px;
+    font-size:13px;
+    color:#475569;
+}
+
+/* AÇÕES */
+
+.acoes{
+    display:flex;
+    gap:8px;
+    padding:0 15px 15px;
+}
+
+.action{
+    flex:1;
+    border:none;
+    border-radius:12px;
+    padding:12px;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.sell{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.edit{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.delete{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.35);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+}
+
+.modal-box{
+    width:100%;
+    max-width:420px;
+    background:white;
+    border-radius:20px;
+    padding:20px;
+}
+
+.modal-box h2{
+    margin-bottom:15px;
+}
+
+.input,
+.select,
+.textarea{
+    width:100%;
+    margin-bottom:10px;
+    border:1px solid var(--border);
+    background:#f8fafc;
+    border-radius:14px;
+    padding:14px;
+    outline:none;
+}
+
+.textarea{
+    min-height:90px;
+    resize:none;
+}
+
+.salvar{
+    width:100%;
+    border:none;
+    background:linear-gradient(135deg,#4ade80,#16a34a);
+    color:white;
+    padding:15px;
+    border-radius:14px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    .botoes{
+        grid-template-columns:1fr;
+    }
+
+    .acoes{
+        flex-direction:column;
+    }
+
+}
+
+
+/* =========================
+CONFIRMAR
+========================= */
+
+.modal-confirmar{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    padding:20px;
+}
+
+.modal-confirmar.show{
+    display:flex;
+}
+
+.confirmar-box{
+    width:100%;
+    max-width:360px;
+    background:white;
+    border-radius:24px;
+    padding:24px;
+    text-align:center;
+    animation:popup .2s ease;
+}
+
+@keyframes popup{
+
+    from{
+        transform:scale(.9);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+.confirmar-icon{
+    width:70px;
+    height:70px;
+    margin:auto;
+    border-radius:50%;
+    background:#dcfce7;
+    color:#16a34a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    margin-bottom:16px;
+}
+
+.confirmar-box h3{
+    font-size:22px;
+    margin-bottom:8px;
+}
+
+.confirmar-box p{
+    color:#64748b;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.confirmar-actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.btn-cancelar,
+.btn-confirmar{
+    flex:1;
+    border:none;
+    border-radius:14px;
+    padding:14px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.btn-cancelar{
+    background:#f1f5f9;
+    color:#334155;
+}
+
+.btn-confirmar{
+    background:linear-gradient(135deg,#4ade80,#16a34a);
+    color:white;
+}
+.confirmar-icon{
+  color:white;
+}
+
+
+
+</style>
+</head>
+<body>
+ <button class="btn-voltar" onclick="voltarDashboard()">
+    <i class="fa-solid fa-arrow-left"></i>
+</button>
+<!-- TOPO -->
+
+<div class="topo">
+
+    <h1>Eletronics LA</h1>
+
+    <p>Painel inteligente da loja</p>
+
+</div>
+
+<!-- CARD -->
+
+<div class="card">
+
+    <small style="
+        font-weight:600;
+        color:#64748b;
+    ">
+        Saldo Atual
+    </small>
+
+    <div class="saldo-row">
+
+        <div>
+
+            <div class="saldo" id="saldo">
+                R$ 0
+            </div>
+
+            <small style="
+                color:#94a3b8;
+                font-size:11px;
+                display:block;
+                margin-top:2px;
+            ">
+                Investimento + lucro total
+            </small>
+
+        </div>
+
+        <button class="eye" onclick="toggleSaldo()">
+
+            <svg id="eyeIcon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2">
+
+                <path stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+
+                <circle cx="12" cy="12" r="3"/>
+
+            </svg>
+
+        </button>
+
+    </div>
+
+    <!-- INFO -->
+
+    <div class="info-loja">
+
+        <div class="box-loja">
+            <span>Loja</span>
+            <strong id="nomeLoja">
+                Minha Loja
+            </strong>
+        </div>
+
+        <div class="box-loja">
+            <span>Administrador</span>
+            <strong id="adminLoja">
+                --
+            </strong>
+        </div>
+
+        <div class="box-loja">
+            <span>Investimento</span>
+            <strong id="investimento">
+                R$ 0
+            </strong>
+        </div>
+
+        <div class="box-loja">
+            <span>📈 Lucro Total</span>
+            <strong id="lucroTotal">
+                R$ 0
+            </strong>
+        </div>
+
+    </div>
+
+    <!-- BOTÕES -->
+
+    <div class="botoes">
+
+        <button class="btn azul">
+            Estoque
+        </button>
+
+        <button class="btn verde" onclick="abrirModal()">
+         (+) Cadastrar Produto
+        </button>
+
+        <button class="btn roxo">
+            Produtos Vendidos
+        </button>
+
+    </div>
+
+    <!-- PESQUISA -->
+
+    <input
+        type="text"
+        class="search"
+        placeholder="Pesquisar produto..."
+        id="pesquisa"
+        onkeyup="pesquisar()"
+    >
+
+</div>
+
+<!-- LISTA -->
+
+<div id="lista"></div>
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+    <div class="modal-box">
+
+        <h2>Novo Produto</h2>
+
+        <input type="text" class="input" id="nome" placeholder="Nome">
+
+        <input type="text" class="input" id="categoria" placeholder="Categoria">
+
+        <textarea class="textarea" id="descricao" placeholder="Descrição"></textarea>
+
+        <input type="number" class="input" id="comprado" placeholder="Comprado por">
+
+        <input type="number" class="input" id="venda" placeholder="Vender por">
+
+        <select class="select" id="estado">
+
+            <option>Novo</option>
+            <option>Usado</option>
+
+        </select>
+
+        <button class="salvar" onclick="salvarProduto()">
+            Salvar Produto
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================
+SUPABASE
+========================= */
+
+const client = supabase.createClient(
+ "https://sdazaoxspcmyqenselmf.supabase.co",
+  "sb_publishable_cWIwZ6SagFpcly9NdcG11A_HW6WbS76"
+);
+
+/* =========================
+VARIAVEIS
+========================= */
+
+let produtoEditando = null;
+let saldoVisivel = true;
+let telaAtual = "ESTOQUE";
+
+/* =========================
+FORMATAR
+========================= */
+
+function dinheiro(v){
+
+    return Number(v || 0)
+    .toLocaleString("pt-BR",{
+        style:"currency",
+        currency:"BRL"
+    });
+
+}
+
+/* =========================
+BOTÕES ESTOQUE / VENDIDOS
+========================= */
+
+document.querySelector(".azul")
+.onclick = () => {
+
+    telaAtual = "ESTOQUE";
+
+    carregarProdutos();
+
+};
+
+document.querySelector(".roxo")
+.onclick = () => {
+
+    telaAtual = "VENDIDO";
+
+    carregarProdutos();
+
+};
+
+/* =========================
+CARREGAR LOJA
+========================= */
+
+async function carregarLoja(){
+
+    const { data } = await client
+    .from("loja")
+    .select("*")
+    .single();
+
+    if(!data) return;
+
+    const saldoReal =
+
+    Number(data.investimento || 0)
+
+    +
+
+    Number(data.lucro_total || 0);
+
+    document.getElementById("saldo")
+    .innerHTML = dinheiro(saldoReal);
+
+    document.getElementById("lucroTotal")
+    .innerHTML = dinheiro(data.lucro_total);
+
+    document.getElementById("investimento")
+    .innerHTML = dinheiro(data.investimento);
+
+    document.getElementById("adminLoja")
+    .innerHTML = data.administrador;
+
+    document.getElementById("nomeLoja")
+    .innerHTML = data.nome;
+
+}
+
+/* =========================
+CARREGAR PRODUTOS
+========================= */
+
+function voltarDashboard(){
+  window.location.href = "../dashboard.html";
+}
+
+async function carregarProdutos(){
+
+    let query = client
+    .from("produtos")
+    .select("*")
+    .order("id", { ascending:false });
+
+    if(telaAtual == "ESTOQUE"){
+
+        query = query.eq("status", "ESTOQUE");
+
+    }
+
+    if(telaAtual == "VENDIDO"){
+
+        query = query.eq("status", "VENDIDO");
+
+    }
+
+    const { data } = await query;
+
+    renderizar(data || []);
+
+}
+
+/* =========================
+RENDER
+========================= */
+
+function renderizar(lista){
+
+    const el =
+    document.getElementById("lista");
+
+    el.innerHTML = "";
+
+    lista.forEach(p => {
+
+        el.innerHTML += `
+
+        <div class="produto">
+
+            <div class="header-produto">
+
+                <div>
+
+                    <div class="nome">
+                        ${p.nome}
+                    </div>
+
+                    <div class="categoria">
+                        ${p.categoria || "--"}
+                    </div>
+
+                </div>
+
+                <div class="status ${p.status == 'VENDIDO' ? 'vendido' : 'estoque'}">
+                    ${p.status}
+                </div>
+
+            </div>
+
+            <div class="info-scroll">
+
+                <div class="info">
+                    <span>Comprado</span>
+                    <strong>${dinheiro(p.comprado)}</strong>
+                </div>
+
+                <div class="info">
+                    <span>Venda</span>
+                    <strong>${dinheiro(p.venda)}</strong>
+                </div>
+
+                <div class="info">
+                    <span>Lucro</span>
+                    <strong>${dinheiro(p.lucro)}</strong>
+                </div>
+
+                <div class="info">
+                    <span>Estado</span>
+                    <strong>${p.estado}</strong>
+                </div>
+
+                <div class="info">
+                    <span>Data</span>
+                    <strong>
+                        ${new Date(p.criado_em)
+                        .toLocaleDateString("pt-BR")}
+                    </strong>
+                </div>
+
+            </div>
+
+            <div class="desc">
+                ${p.descricao || "--"}
+            </div>
+
+            <div class="acoes">
+
+                ${
+                    p.status != 'VENDIDO'
+                    ?
+                    `
+                 <button class="action sell"
+onclick="abrirConfirmarVenda(${p.id}, ${p.lucro})">
+    Marcar Vendido
+</button>
+                    `
+                    :
+                    ""
+                }
+
+                <button class="action edit"
+                onclick="editarProduto(${p.id})">
+                    Editar
+                </button>
+
+                <button class="action delete"
+onclick="abrirExcluir(${p.id})">
+    Deletar
+</button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+/* =========================
+MODAL
+========================= */
+
+function abrirModal(){
+
+    produtoEditando = null;
+
+    document.getElementById("modal")
+    .style.display = "flex";
+
+}
+
+window.onclick = function(e){
+
+    const modal =
+    document.getElementById("modal");
+
+    if(e.target == modal){
+
+        modal.style.display = "none";
+
+    }
+
+}
+
+/* =========================
+SALVAR
+========================= */
+
+async function salvarProduto(){
+
+    const nome =
+    document.getElementById("nome").value;
+
+    const categoria =
+    document.getElementById("categoria").value;
+
+    const descricao =
+    document.getElementById("descricao").value;
+
+    const comprado =
+    Number(document.getElementById("comprado").value);
+
+    const venda =
+    Number(document.getElementById("venda").value);
+
+    const estado =
+    document.getElementById("estado").value;
+
+    const lucro =
+    venda - comprado;
+
+    if(!nome){
+
+        alert("Digite o nome");
+        return;
+
+    }
+
+    if(produtoEditando){
+
+        await client
+        .from("produtos")
+        .update({
+
+            nome,
+            categoria,
+            descricao,
+            comprado,
+            venda,
+            lucro,
+            estado
+
+        })
+        .eq("id", produtoEditando);
+
+    }
+
+    else{
+
+        await client
+        .from("produtos")
+        .insert([{
+
+            nome,
+            categoria,
+            descricao,
+
+            comprado,
+            venda,
+            lucro,
+
+            estado,
+            status:"ESTOQUE"
+
+        }]);
+
+    }
+
+    document.getElementById("modal")
+    .style.display = "none";
+
+    carregarProdutos();
+
+}
+
+/* =========================
+EDITAR
+========================= */
+
+async function editarProduto(id){
+
+    produtoEditando = id;
+
+    const { data } = await client
+    .from("produtos")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+    if(!data) return;
+
+    nome.value = data.nome;
+    categoria.value = data.categoria;
+    descricao.value = data.descricao;
+    comprado.value = data.comprado;
+    venda.value = data.venda;
+    estado.value = data.estado;
+
+    document.getElementById("modal")
+    .style.display = "flex";
+
+}
+
+/* =========================
+CONFIRMAR VENDA
+========================= */
+
+let vendaId = null;
+let vendaLucro = 0;
+
+function abrirConfirmarVenda(id, lucro){
+
+    vendaId = id;
+    vendaLucro = lucro;
+
+    document.getElementById("modalVenda")
+    .classList.add("show");
+
+}
+
+function fecharVenda(){
+
+    document.getElementById("modalVenda")
+    .classList.remove("show");
+
+}
+
+async function confirmarVenda(){
+
+    await client
+    .from("produtos")
+    .update({
+        status:"VENDIDO"
+    })
+    .eq("id", vendaId);
+
+    const { data } = await client
+    .from("loja")
+    .select("*")
+    .single();
+
+    const novoLucro =
+
+    Number(data.lucro_total || 0)
+
+    +
+
+    Number(vendaLucro);
+
+    await client
+    .from("loja")
+    .update({
+
+        lucro_total: novoLucro
+
+    })
+    .eq("id", data.id);
+
+    fecharVenda();
+
+    carregarProdutos();
+    carregarLoja();
+
+}
+
+/* =========================
+EXCLUIR
+========================= */
+
+let idExcluir = null;
+
+function abrirExcluir(id){
+
+    idExcluir = id;
+
+    document.getElementById("modalExcluir")
+    .classList.add("show");
+
+}
+
+function fecharExcluir(){
+
+    document.getElementById("modalExcluir")
+    .classList.remove("show");
+
+}
+
+async function confirmarExcluir(){
+
+    await client
+    .from("produtos")
+    .delete()
+    .eq("id", idExcluir);
+
+    fecharExcluir();
+
+    carregarProdutos();
+
+}
+
+
+/* =========================
+DELETAR
+========================= */
+
+async function deletarProduto(id){
+
+    const confirmar =
+    confirm("Deseja deletar?");
+
+    if(!confirmar) return;
+
+    await client
+    .from("produtos")
+    .delete()
+    .eq("id", id);
+
+    carregarProdutos();
+
+}
+
+/* =========================
+MARCAR VENDIDO
+========================= */
+
+async function marcarVendido(id, lucro){
+
+    await client
+    .from("produtos")
+    .update({
+        status:"VENDIDO"
+    })
+    .eq("id", id);
+
+    const { data } = await client
+    .from("loja")
+    .select("*")
+    .single();
+
+    const novoLucro =
+
+    Number(data.lucro_total || 0)
+
+    +
+
+    Number(lucro);
+
+    await client
+    .from("loja")
+    .update({
+
+        lucro_total: novoLucro
+
+    })
+    .eq("id", data.id);
+
+    carregarProdutos();
+
+    carregarLoja();
+
+}
+
+/* =========================
+PESQUISAR
+========================= */
+
+async function pesquisar(){
+
+    const valor =
+    document.getElementById("pesquisa")
+    .value.toLowerCase();
+
+    const { data } = await client
+    .from("produtos")
+    .select("*");
+
+    const filtrado =
+    data.filter(p =>
+
+        p.nome.toLowerCase()
+        .includes(valor)
+
+    );
+
+    renderizar(filtrado);
+
+}
+
+/* =========================
+OCULTAR SALDO
+========================= */
+
+function toggleSaldo(){
+
+    saldoVisivel = !saldoVisivel;
+
+    const saldo =
+    document.getElementById("saldo");
+
+    const eye =
+    document.getElementById("eyeIcon");
+
+    if(saldoVisivel){
+
+        carregarLoja();
+
+        eye.innerHTML = `
+        
+            <path stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+
+            <circle cx="12" cy="12" r="3"/>
+        
+        `;
+
+    }
+
+    else{
+
+        saldo.innerHTML = "R$ ••••••";
+
+        eye.innerHTML = `
+        
+            <path stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3 3l18 18"/>
+
+            <path stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M10.584 10.587a2 2 0 002.829 2.829"/>
+
+            <path stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9.363 5.365A9.466 9.466 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.956 9.956 0 01-4.132 5.411M6.228 6.228A9.956 9.956 0 002.458 12c1.274 4.057 5.064 7 9.542 7a9.47 9.47 0 004.168-.949"/>
+        
+        `;
+
+    }
+
+}
+
+/* =========================
+INIT
+========================= */
+
+window.onload = () => {
+
+    carregarLoja();
+    carregarProdutos();
+
+};
+
+</script>
+
+
+
+<!-- MODAL CONFIRMAR VENDA -->
+
+<div class="modal-confirmar" id="modalVenda">
+
+  <div class="confirmar-box">
+
+<div class="confirmar-icon vendido-icon">
+    <i class="fa-solid fa-circle-check"></i>
+</div>
+
+    <h3>Marcar como vendido?</h3>
+
+    <p>
+      O lucro será adicionado ao saldo da loja.
+    </p>
+
+    <div class="confirmar-actions">
+
+      <button class="btn-cancelar" onclick="fecharVenda()">
+        Cancelar
+      </button>
+
+      <button class="btn-confirmar" onclick="confirmarVenda()">
+        Confirmar
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- MODAL EXCLUIR -->
+
+<div class="modal-confirmar" id="modalExcluir">
+
+  <div class="confirmar-box">
+
+<div class="confirmar-icon excluir-icon">
+    <i class="fa-solid fa-trash"></i>
+</div>
+    <h3>Excluir produto?</h3>
+
+    <p>
+      Essa ação não poderá ser desfeita.
+    </p>
+
+    <div class="confirmar-actions">
+
+      <button class="btn-cancelar"
+      onclick="fecharExcluir()">
+
+        Cancelar
+
+      </button>
+
+      <button class="btn-confirmar"
+      style="
+        background:linear-gradient(135deg,#ef4444,#dc2626);
+      "
+      onclick="confirmarExcluir()">
+
+        Excluir
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>
