@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Organize - Anotações</title>
+
+<link rel="icon" type="image/x-icon" href="assets/fav-icon/favicon.ico">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="anotacoes.css">
+
+</head>
+
+<body>
+
+<!-- TOPO -->
+
+<div class="topbar">
+
+  <div class="topbar-left">
+
+    <button class="btn-voltar"
+    onclick="voltarDashboard()">
+
+      <i class="fa-solid fa-arrow-left"></i>
+
+    </button>
+
+    <h1>Meus Compromissos</h1>
+
+  </div>
+
+  <button class="btn-add"
+  onclick="novaAnotacao()">
+
+    <i class="fa-solid fa-plus"></i>
+
+    Novo Compromisso
+
+  </button>
+
+</div>
+
+<!-- TOTAL -->
+
+<div class="total-box">
+
+  Total de compromissos:
+  <strong id="totalAnotacoes">
+    0
+  </strong>
+
+</div>
+
+<!-- FILTROS -->
+
+<div class="filters">
+
+  <button onclick="filtrar('todos')">
+    Todos
+  </button>
+
+  <button onclick="filtrar('hoje')">
+    Hoje
+  </button>
+
+  <button onclick="filtrar('amanha')">
+    Amanhã
+  </button>
+
+  <button onclick="carregarAnotacoes()">
+    🔄 Atualizar
+  </button>
+
+</div>
+
+<!-- LISTA -->
+
+<div class="lista-chat"
+id="listaAnotacoes"></div>
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="anotacoes.js"></script>
+
+<!-- MODAL -->
+
+<div class="modal"
+id="modalAnotacao">
+
+  <div class="modal-content">
+
+    <div class="modal-top">
+
+      <h2>Novo Compromisso</h2>
+
+      <button class="btn-fechar"
+      onclick="fecharModal()">
+
+        <i class="fa-solid fa-xmark"></i>
+
+      </button>
+
+    </div>
+
+    <form id="formAnotacao">
+
+      <div class="input-group">
+
+        <label>Compromisso</label>
+
+        <input
+        type="text"
+        id="compromisso"
+        placeholder="Ex: Médico Ortopedista"
+        required>
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Local</label>
+
+        <input
+        type="text"
+        id="local"
+        placeholder="Ex: Hospital Naval">
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Horário</label>
+
+        <input
+        type="datetime-local"
+        id="horario"
+        required>
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Observação</label>
+
+        <textarea
+        id="observacao"
+        placeholder="Observações"></textarea>
+
+      </div>
+
+      <button
+      type="submit"
+      class="btn-salvar">
+
+        Salvar Compromisso
+
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+<!-- TOAST -->
+
+<div class="toast"
+id="toast">
+
+  <i class="fa-solid fa-circle-check"></i>
+
+  <span id="toastText">
+
+    Sucesso
+
+  </span>
+
+</div>
+
+<!-- MODAL EXCLUIR -->
+
+<div class="modal-confirmar"
+id="modalExcluir">
+
+  <div class="confirmar-box">
+
+    <div class="confirmar-icon">
+
+      <i class="fa-solid fa-trash"></i>
+
+    </div>
+
+    <h3>Excluir compromisso?</h3>
+
+    <p>
+      Essa ação não poderá ser desfeita.
+    </p>
+
+    <div class="confirmar-actions">
+
+      <button
+      class="btn-cancelar"
+      onclick="fecharExcluir()">
+
+        Cancelar
+
+      </button>
+
+      <button
+      class="btn-confirmar"
+      onclick="confirmarExcluir()">
+
+        Excluir
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
